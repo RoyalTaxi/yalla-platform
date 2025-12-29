@@ -7,12 +7,20 @@ interface Screen {
     val route: String
 }
 
+/**
+ * Functional interface for screen content to avoid composable lambda casting issues.
+ */
+fun interface ScreenContent<S : Screen> {
+    @Composable
+    fun Content(screen: S, navigator: Navigator<S>)
+}
+
 data class ScreenEntry<S : Screen>(
     val screenClass: KClass<out S>,
     val route: String,
     val arguments: List<NavArgSpec> = emptyList(),
     val parse: (NavArgs) -> S,
-    val content: @Composable (S, Navigator<S>) -> Unit
+    val content: ScreenContent<S>
 )
 
 interface ScreenRegistry<S : Screen> {
@@ -29,21 +37,26 @@ class ScreenRegistryBuilder<S : Screen> @PublishedApi internal constructor() {
         route: String,
         arguments: List<NavArgSpec> = emptyList(),
         noinline parse: (NavArgs) -> T,
-        noinline content: @Composable (T, Navigator<S>) -> Unit
+        crossinline content: @Composable (T, Navigator<S>) -> Unit
     ) {
-        @Suppress("UNCHECKED_CAST")
         _entries += ScreenEntry(
             screenClass = T::class,
             route = route,
             arguments = arguments,
-            parse = parse,
-            content = content as @Composable (S, Navigator<S>) -> Unit
+            parse = { args ->
+                @Suppress("UNCHECKED_CAST")
+                parse(args) as S
+            },
+            content = ScreenContent { screen, navigator ->
+                @Suppress("UNCHECKED_CAST")
+                content(screen as T, navigator)
+            }
         )
     }
 
     inline fun <reified T : S> screen(
         instance: T,
-        noinline content: @Composable (T, Navigator<S>) -> Unit
+        crossinline content: @Composable (T, Navigator<S>) -> Unit
     ) {
         screen(
             route = instance.route,

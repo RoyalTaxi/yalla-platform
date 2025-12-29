@@ -23,5 +23,11 @@ class NavArgs internal constructor(private val values: Map<String, Any?>) {
 
     companion object {
         val Empty = NavArgs(emptyMap())
+
+        /**
+         * Creates NavArgs from a map of values.
+         * Use this to create NavArgs from platform-specific argument sources.
+         */
+        fun fromMap(values: Map<String, Any?>): NavArgs = NavArgs(values)
     }
 }
