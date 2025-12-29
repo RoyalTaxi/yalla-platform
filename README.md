@@ -31,15 +31,29 @@ dependencyResolutionManagement {
 
 // build.gradle.kts
 dependencies {
-    implementation("uz.yalla:platform:1.0.0")
+    implementation("uz.yalla:platform:1.0.2")
 }
 ```
 
-## Components
+## Navigation
 
-### Navigation
+### Navigator Interface
 
-Type-safe navigation abstraction with platform-native implementations:
+The `Navigator` interface provides full navigation capabilities:
+
+```kotlin
+interface Navigator<S : Screen> {
+    fun navigate(screen: S)
+    fun back()
+    fun setRoot(screen: S)
+    fun popTo(screen: S, inclusive: Boolean = false)
+    fun replaceFrom(fromScreen: S, toScreen: S)
+}
+```
+
+### Screen Registry
+
+Define screens with type-safe navigation:
 
 ```kotlin
 // Define screens
@@ -51,7 +65,10 @@ sealed class AppScreen : Screen {
 // Create registry
 val registry = screenRegistry<AppScreen>(start = AppScreen.Home) {
     screen(AppScreen.Home) { _, navigator ->
-        HomeScreen(onNavigate = { navigator.navigate(AppScreen.Detail("123")) })
+        HomeScreen(
+            onNavigate = { navigator.navigate(AppScreen.Detail("123")) },
+            onLogout = { navigator.setRoot(AppScreen.Login) }
+        )
     }
     screen<AppScreen.Detail>(
         route = "detail/{id}",
@@ -61,11 +78,43 @@ val registry = screenRegistry<AppScreen>(start = AppScreen.Home) {
         DetailScreen(id = screen.id, onBack = { navigator.back() })
     }
 }
-
-// Use navigator
-val navigator = PlatformNavigator(controller, registry, onNavigate, onBack)
-navigator.navigate(AppScreen.Detail("456"))
 ```
+
+### iOS Navigation Host
+
+For iOS, use `IosNavigationHost` for a complete navigation solution:
+
+```kotlin
+fun AppRootController(): UIViewController {
+    val registry = createAppScreenRegistry(...)
+
+    val navResult = IosNavigationHost(
+        registry = registry,
+        startScreen = AppScreen.Home,
+        viewControllerFactory = { screen, navigator ->
+            val entry = registry.entryForScreen(screen)
+            baseViewController {
+                entry.content.Content(screen, navigator)
+            }
+        }
+    )
+
+    // Handle locale changes
+    scope.launch {
+        localeFlow.collect { navResult.rebuildBackstack() }
+    }
+
+    return navResult.navigationController
+}
+```
+
+Features:
+- `InteractiveNavigationController` with swipe-to-back gesture
+- Automatic screen stack synchronization
+- Full `Navigator` implementation
+- `rebuildBackstack()` for locale changes
+
+## Other Components
 
 ### System Bar Colors
 
@@ -116,7 +165,7 @@ NativeSquircleIconButton(
 
 | Component | Android | iOS |
 |-----------|---------|-----|
-| Navigation | NavHostController | UINavigationController |
+| Navigation | NavHostController | IosNavigationHost |
 | System Bars | WindowInsetsController | UIStatusBarStyle |
 | Sheet | ModalBottomSheet | UIViewController presentation |
 | Buttons | Material3 IconButton | UIKitViewController with SF Symbols |
