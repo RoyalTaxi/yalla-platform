@@ -6,11 +6,12 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
     `maven-publish`
 }
 
 group = "uz.yalla"
-version = "1.0.2"
+version = "1.0.0"
 
 kotlin {
     androidTarget {
@@ -42,7 +43,6 @@ kotlin {
         }
 
         androidMain.dependencies {
-            implementation(libs.navigation.compose)
             implementation(libs.androidx.core.ktx)
             implementation(libs.androidx.compose.material.icons.extended)
         }
