@@ -1,17 +1,29 @@
 package uz.yalla.platform.button
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.interop.UIKitViewController
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.UIKitInteropProperties
-import androidx.compose.ui.viewinterop.UIKitViewController
+import kotlinx.cinterop.ExperimentalForeignApi
+import org.jetbrains.compose.resources.painterResource
+import uz.yalla.design.theme.System
 import uz.yalla.platform.LocalCircleIconButtonFactory
 import uz.yalla.platform.model.IconType
-import uz.yalla.platform.toSFSymbol
+import uz.yalla.platform.toAssetName
+import uz.yalla.platform.toDrawableResource
 
+@OptIn(ExperimentalForeignApi::class)
 @Composable
 actual fun NativeCircleIconButton(
     iconType: IconType,
@@ -20,24 +32,36 @@ actual fun NativeCircleIconButton(
     alpha: Float,
     border: BorderStroke?
 ) {
-    val factory = LocalCircleIconButtonFactory.current ?: return
+    val factory = LocalCircleIconButtonFactory.current
 
-    val borderWidth = border?.width?.value?.toDouble() ?: 0.0
-    val borderColor = border?.brush?.let { brush ->
-        (brush as? SolidColor)?.value?.value?.toLong() ?: 0L
-    } ?: 0L
+    if (factory != null) {
+        val borderWidth = border?.width?.value?.toDouble() ?: 0.0
+        val borderColor = (border?.brush as? SolidColor)?.value?.toArgb()?.toLong() ?: 0L
 
-    UIKitViewController(
-        factory = { factory(iconType.toSFSymbol(), onClick, borderWidth, borderColor) },
-        modifier = modifier.size(48.dp),
-        update = { viewController ->
-            viewController.view.alpha = alpha.toDouble()
-            viewController.view.backgroundColor = platform.UIKit.UIColor.clearColor
-            viewController.view.setOpaque(false)
-        },
-        properties = UIKitInteropProperties(
-            isInteractive = true,
-            isNativeAccessibilityEnabled = true
+        UIKitViewController(
+            factory = { factory(iconType.toAssetName(), onClick, borderWidth, borderColor) },
+            modifier = modifier
+                .size(48.dp)
+                .graphicsLayer { this.alpha = alpha }
         )
-    )
+    } else {
+        // Fallback to Compose implementation
+        IconButton(
+            onClick = onClick,
+            modifier = modifier
+                .size(48.dp)
+                .graphicsLayer { this.alpha = alpha }
+                .then(if (border != null) Modifier.border(border, CircleShape) else Modifier),
+            colors = IconButtonDefaults.iconButtonColors(
+                contentColor = System.color.iconBase,
+                containerColor = System.color.backgroundBase
+            )
+        ) {
+            Image(
+                painter = painterResource(iconType.toDrawableResource()),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(System.color.iconBase)
+            )
+        }
+    }
 }

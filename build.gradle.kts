@@ -11,7 +11,13 @@ plugins {
 }
 
 group = "uz.yalla"
-version = "1.0.0"
+version = "1.2.0"
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "uz.yalla.platform.resources"
+    generateResClass = always
+}
 
 kotlin {
     androidTarget {
@@ -40,11 +46,11 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.ui)
+            implementation(compose.components.resources)
         }
 
         androidMain.dependencies {
             implementation(libs.androidx.core.ktx)
-            implementation(libs.androidx.compose.material.icons.extended)
         }
     }
 }

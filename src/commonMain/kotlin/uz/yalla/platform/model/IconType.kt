@@ -2,8 +2,11 @@ package uz.yalla.platform.model
 
 enum class IconType {
     MENU,
-    LOCATION,
     CLOSE,
     DONE,
-    Back
+    Back,
+    FOCUS_LOCATION,
+    FOCUS_ROUTE,
+    FOCUS_ORIGIN,
+    FOCUS_DESTINATION
 }

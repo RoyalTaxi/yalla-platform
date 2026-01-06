@@ -1,19 +1,21 @@
 package uz.yalla.platform.button
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.painterResource
 import uz.yalla.design.theme.System
 import uz.yalla.platform.model.IconType
-import uz.yalla.platform.toImageVector
+import uz.yalla.platform.toDrawableResource
 
 @Composable
 actual fun NativeSquircleIconButton(
@@ -35,10 +37,10 @@ actual fun NativeSquircleIconButton(
             .size(48.dp)
             .padding(4.dp)
     ) {
-        Icon(
-            imageVector = iconType.toImageVector(),
+        Image(
+            painter = painterResource(iconType.toDrawableResource()),
             contentDescription = null,
-            tint = System.color.iconBase
+            colorFilter = ColorFilter.tint(System.color.iconBase)
         )
     }
 }
