@@ -17,6 +17,7 @@ import androidx.compose.ui.interop.UIKitViewController
 import androidx.compose.ui.unit.dp
 import kotlinx.cinterop.ExperimentalForeignApi
 import org.jetbrains.compose.resources.painterResource
+import platform.Foundation.NSSelectorFromString
 import uz.yalla.design.theme.System
 import uz.yalla.platform.LocalSquircleIconButtonFactory
 import uz.yalla.platform.model.IconType
@@ -36,9 +37,16 @@ actual fun NativeSquircleIconButton(
     if (factory != null) {
         val borderWidth = border?.width?.value?.toDouble() ?: 0.0
         val borderColor = (border?.brush as? SolidColor)?.value?.toArgb()?.toLong() ?: 0L
+        val iconName = iconType.toAssetName()
 
         UIKitViewController(
-            factory = { factory(iconType.toAssetName(), onClick, borderWidth, borderColor) },
+            factory = { factory(iconName, onClick, borderWidth, borderColor) },
+            update = { viewController ->
+                val selector = NSSelectorFromString("updateIcon:")
+                if (viewController.respondsToSelector(selector)) {
+                    viewController.performSelector(selector, withObject = iconName)
+                }
+            },
             modifier = modifier.size(48.dp)
         )
     } else {
