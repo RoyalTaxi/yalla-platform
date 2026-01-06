@@ -2,15 +2,15 @@ package uz.yalla.platform
 
 import org.jetbrains.compose.resources.DrawableResource
 import uz.yalla.platform.model.IconType
-import uz.yalla.platform.resources.Res
-import uz.yalla.platform.resources.ic_arrow_back
-import uz.yalla.platform.resources.ic_close
-import uz.yalla.platform.resources.ic_done
-import uz.yalla.platform.resources.ic_focus_destination
-import uz.yalla.platform.resources.ic_focus_location
-import uz.yalla.platform.resources.ic_focus_origin
-import uz.yalla.platform.resources.ic_focus_route
-import uz.yalla.platform.resources.ic_menu
+import uz.yalla.resources.Res
+import uz.yalla.resources.ic_arrow_back
+import uz.yalla.resources.ic_close
+import uz.yalla.resources.ic_done
+import uz.yalla.resources.ic_focus_destination
+import uz.yalla.resources.ic_focus_location
+import uz.yalla.resources.ic_focus_origin
+import uz.yalla.resources.ic_focus_route
+import uz.yalla.resources.ic_menu
 
 fun IconType.toDrawableResource(): DrawableResource = when (this) {
     IconType.MENU -> Res.drawable.ic_menu
