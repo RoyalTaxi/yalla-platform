@@ -43,14 +43,13 @@ actual fun NativeCircleIconButton(
         UIKitViewController(
             factory = { factory(iconName, onClick, borderWidth, borderColor) },
             update = { viewController ->
+                viewController.view.alpha = alpha.toDouble()
                 val selector = NSSelectorFromString("updateIcon:")
                 if (viewController.respondsToSelector(selector)) {
                     viewController.performSelector(selector, withObject = iconName)
                 }
             },
-            modifier = modifier
-                .size(48.dp)
-                .graphicsLayer { this.alpha = alpha }
+            modifier = modifier.size(48.dp)
         )
     } else {
         // Fallback to Compose implementation
