@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.3] - 2026-01-07
+
+### Fixed
+- **iOS EXC_BAD_ACCESS Crash**
+  - Fixed crash caused by `rememberUpdatedState` creating Compose State objects that become invalid when accessed from Swift callbacks
+  - Removed `rememberUpdatedState` wrapper - now pass `onClick` directly to factory
+  - Removed fallback Compose implementations - native buttons only
+
+## [1.4.2] - 2026-01-07 [YANKED]
+
+### Note
+- This version introduced `rememberUpdatedState` which caused EXC_BAD_ACCESS crashes - use 1.4.3 instead
+
 ## [1.4.1] - 2026-01-06
 
 ### Fixed
