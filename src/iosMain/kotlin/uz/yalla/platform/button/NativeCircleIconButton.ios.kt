@@ -8,6 +8,8 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.interop.UIKitViewController
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.UIKitInteropProperties
+import androidx.compose.ui.viewinterop.UIKitViewController
 import kotlinx.cinterop.ExperimentalForeignApi
 import uz.yalla.platform.LocalCircleIconButtonFactory
 import uz.yalla.platform.model.IconType
@@ -29,6 +31,7 @@ actual fun NativeCircleIconButton(
 
     UIKitViewController(
         factory = { factory(iconName, onClick, borderWidth, borderColor) },
+        update = { it.view.alpha = alpha.toDouble() },
         modifier = modifier.size(48.dp)
     )
 }
