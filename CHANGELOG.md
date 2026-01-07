@@ -5,13 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.4.3] - 2026-01-07
+## [1.4.4] - 2026-01-07
 
 ### Fixed
 - **iOS EXC_BAD_ACCESS Crash**
-  - Fixed crash caused by `rememberUpdatedState` creating Compose State objects that become invalid when accessed from Swift callbacks
-  - Removed `rememberUpdatedState` wrapper - now pass `onClick` directly to factory
-  - Removed fallback Compose implementations - native buttons only
+  - Removed `update` block from UIKitViewController - Compose's caching mechanism causes crashes when UIKit calls back
+  - Icon and alpha updates no longer supported (buttons are static after creation)
+
+## [1.4.3] - 2026-01-07 [YANKED]
+
+### Note
+- Still crashed due to Compose's internal caching in the update block
 
 ## [1.4.2] - 2026-01-07 [YANKED]
 
