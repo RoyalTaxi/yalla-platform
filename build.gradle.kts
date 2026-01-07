@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "uz.yalla"
-version = "1.4.6"
+version = "1.4.7"
 
 kotlin {
     androidTarget {

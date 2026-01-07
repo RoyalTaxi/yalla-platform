@@ -3,6 +3,7 @@ package uz.yalla.platform.button
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.toArgb
@@ -11,9 +12,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.UIKitInteropProperties
 import androidx.compose.ui.viewinterop.UIKitViewController
 import kotlinx.cinterop.ExperimentalForeignApi
-import platform.UIKit.UIButton
-import platform.UIKit.UIControlStateNormal
-import platform.UIKit.UIImage
 import uz.yalla.platform.LocalCircleIconButtonFactory
 import uz.yalla.platform.model.IconType
 import uz.yalla.platform.toAssetName
@@ -32,14 +30,13 @@ actual fun NativeCircleIconButton(
     val borderColor = (border?.brush as? SolidColor)?.value?.toArgb()?.toLong() ?: 0L
     val iconName = iconType.toAssetName()
 
-    UIKitViewController(
-        factory = { factory(iconName, onClick, borderWidth, borderColor) },
-        update = { controller ->
-            controller.view.alpha = alpha.toDouble()
-            val button = controller.view as? UIButton
-            val image = UIImage.imageNamed(iconName)
-            button?.setImage(image, forState = UIControlStateNormal)
-        },
-        modifier = modifier.size(48.dp)
-    )
+    key(iconType) {
+        UIKitViewController(
+            factory = { factory(iconName, onClick, borderWidth, borderColor) },
+            update = { controller ->
+                controller.view.alpha = alpha.toDouble()
+            },
+            modifier = modifier.size(48.dp)
+        )
+    }
 }
