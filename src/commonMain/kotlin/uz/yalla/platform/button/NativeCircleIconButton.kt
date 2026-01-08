@@ -3,6 +3,7 @@ package uz.yalla.platform.button
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import uz.yalla.platform.model.IconType
 
 @Composable
@@ -11,5 +12,6 @@ expect fun NativeCircleIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     alpha: Float = 1f,
-    border: BorderStroke? = null
+    border: BorderStroke? = null,
+    background: Color = Color.Unspecified
 )

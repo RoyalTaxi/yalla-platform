@@ -10,7 +10,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
@@ -18,14 +17,12 @@ import uz.yalla.design.theme.System
 import uz.yalla.platform.model.IconType
 import uz.yalla.platform.toDrawableResource
 
-@Suppress("UNUSED_PARAMETER")
 @Composable
-actual fun NativeSquircleIconButton(
+fun SheetIconButton(
     iconType: IconType,
     onClick: () -> Unit,
-    modifier: Modifier,
-    border: BorderStroke?,
-    background: Color
+    modifier: Modifier = Modifier,
+    border: BorderStroke? = null
 ) {
     Button(
         onClick = onClick,

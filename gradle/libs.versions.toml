@@ -9,7 +9,7 @@ kotlin-serialization = "1.9.0"
 
 [libraries]
 yalla-design = { module = "uz.yalla:design", version = "1.1.0" }
-yalla-resources = { module = "uz.yalla:resources", version = "1.0.0" }
+yalla-resources = { module = "uz.yalla:resources", version = "1.4.5" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "material-icons" }
