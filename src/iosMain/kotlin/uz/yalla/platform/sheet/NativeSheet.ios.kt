@@ -26,7 +26,7 @@ actual fun NativeSheet(
     onDismissRequest: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    val parentController = remember { findKeyWindowRootController() } ?: return
+    val parentController = remember(isVisible) { findKeyWindowRootController() } ?: return
     val currentOnDismiss by rememberUpdatedState(onDismissRequest)
     val currentContent by rememberUpdatedState(content)
 
