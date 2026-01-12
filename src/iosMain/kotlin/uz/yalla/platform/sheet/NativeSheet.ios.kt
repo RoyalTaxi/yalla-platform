@@ -67,13 +67,15 @@ private fun findKeyWindowRootController(): UIViewController? {
         (window as? UIWindow)?.isKeyWindow() == true
     } as? UIWindow ?: UIApplication.sharedApplication.keyWindow
 
-    return keyWindow?.rootViewController?.topPresentedController()
+    return keyWindow?.rootViewController?.topValidController()
 }
 
-private fun UIViewController.topPresentedController(): UIViewController {
+private fun UIViewController.topValidController(): UIViewController {
     var current = this
     while (current.presentedViewController != null) {
-        current = current.presentedViewController!!
+        val presented = current.presentedViewController!!
+        if (presented.isBeingDismissed() || presented.view.window == null) { break }
+        current = presented
     }
     return current
 }
