@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
+@file:OptIn(ExperimentalForeignApi::class, BetaInteropApi::class, kotlin.time.ExperimentalTime::class)
 
 package uz.yalla.platform.picker
 
