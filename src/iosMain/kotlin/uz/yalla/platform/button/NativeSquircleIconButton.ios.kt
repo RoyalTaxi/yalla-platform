@@ -12,8 +12,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.UIKitInteropProperties
-import androidx.compose.ui.viewinterop.UIKitViewController
+import com.infiniteretry.snizzors.SnizzorsUIViewController
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.UIKit.UIColor
 import uz.yalla.platform.LocalSquircleIconButtonFactory
@@ -43,7 +42,7 @@ actual fun NativeSquircleIconButton(
     }
 
     Box(modifier = modifier.size(48.dp).then(backgroundModifier)) {
-        UIKitViewController(
+        SnizzorsUIViewController(
             factory = { factory(iconName, onClick, borderWidth, borderColor) },
             update = { controller ->
                 controller.view.backgroundColor = UIColor.clearColor
@@ -51,11 +50,7 @@ actual fun NativeSquircleIconButton(
                 controller.view.layer.setOpaque(false)
                 controller.view.layer.backgroundColor = UIColor.clearColor.CGColor
             },
-            modifier = Modifier.size(48.dp),
-            properties = UIKitInteropProperties(
-                isInteractive = true,
-                isNativeAccessibilityEnabled = true
-            )
+            modifier = Modifier.size(48.dp)
         )
     }
 }

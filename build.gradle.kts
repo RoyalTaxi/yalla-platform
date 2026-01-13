@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "uz.yalla"
-version = "1.5.6"
+version = "1.5.7"
 
 kotlin {
     androidTarget {
@@ -46,6 +46,10 @@ kotlin {
 
         androidMain.dependencies {
             implementation(libs.androidx.core.ktx)
+        }
+
+        iosMain.dependencies {
+            implementation(libs.snizzors)
         }
     }
 }

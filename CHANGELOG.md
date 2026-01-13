@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.7] - 2026-01-13
+
+### Changed
+- **iOS Native Components**
+  - Migrated from `UIKitViewController` to `SnizzorsUIViewController` for proper overlay rendering
+  - Native views now render **above** Compose content instead of below with hole-cutting
+  - Eliminates white rectangle background issue on native components
+  - Added `com.infiniteretry.snizzors:snizzors:1.0.0` dependency for iOS
+
 ## [1.5.6] - 2026-01-12
 
 ### Fixed
