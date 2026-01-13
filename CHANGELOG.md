@@ -5,14 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.5.7] - 2026-01-13
+## [1.6.0] - 2026-01-13
+
+### Added
+- **NativeLoadingIndicator**
+  - Platform-native loading indicator component
+  - iOS: Uses `UIActivityIndicatorView` with Snizzors overlay
+  - Android: Uses Material3 `CircularProgressIndicator`
+  - Supports custom color via `color` parameter
+
+- **NativeWheelDatePicker**
+  - Platform-native wheel date picker component
+  - iOS: Uses `UIDatePicker` with wheel style via Snizzors overlay
+  - Android: Uses `WheelDatePicker` from datetime-wheel-picker library
+  - Supports `startDate`, `minDate`, `maxDate`, and `onDateChanged` callback
 
 ### Changed
 - **iOS Native Components**
   - Migrated from `UIKitViewController` to `SnizzorsUIViewController` for proper overlay rendering
   - Native views now render **above** Compose content instead of below with hole-cutting
   - Eliminates white rectangle background issue on native components
-  - Added `com.infiniteretry.snizzors:snizzors:1.0.0` dependency for iOS
+
+### Dependencies
+- Added `com.infiniteretry.snizzors:snizzors:1.0.0` for iOS overlay support
+- Added `io.github.darkokoa:datetime-wheel-picker:1.1.0-alpha05-compose1.9` for Android date picker
+- Added `org.jetbrains.kotlinx:kotlinx-datetime:0.7.1-0.6.x-compat` for date handling
 
 ## [1.5.6] - 2026-01-12
 

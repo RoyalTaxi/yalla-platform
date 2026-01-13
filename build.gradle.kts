@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "uz.yalla"
-version = "1.5.7"
+version = "1.6.0"
 
 kotlin {
     androidTarget {
@@ -42,6 +42,9 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
+
+            api(libs.kotlinx.datetime)
+            api(libs.datetime.wheel.picker)
         }
 
         androidMain.dependencies {
