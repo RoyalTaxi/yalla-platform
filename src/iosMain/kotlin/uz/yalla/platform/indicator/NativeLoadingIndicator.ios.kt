@@ -3,17 +3,19 @@ package uz.yalla.platform.indicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.infiniteretry.snizzors.SnizzorsUIView
+import androidx.compose.ui.viewinterop.UIKitView
+import kotlinx.cinterop.ExperimentalForeignApi
 import platform.UIKit.UIActivityIndicatorView
 import platform.UIKit.UIActivityIndicatorViewStyleMedium
 import platform.UIKit.UIColor
 
+@OptIn(ExperimentalForeignApi::class)
 @Composable
 actual fun NativeLoadingIndicator(
     modifier: Modifier,
     color: Color
 ) {
-    SnizzorsUIView(
+    UIKitView(
         modifier = modifier,
         factory = {
             UIActivityIndicatorView(activityIndicatorStyle = UIActivityIndicatorViewStyleMedium).apply {

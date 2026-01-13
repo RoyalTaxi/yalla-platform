@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
-import com.infiniteretry.snizzors.SnizzorsUIViewController
+import androidx.compose.ui.viewinterop.UIKitViewController
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.UIKit.UIColor
 import uz.yalla.platform.LocalCircleIconButtonFactory
@@ -43,7 +43,7 @@ actual fun NativeCircleIconButton(
 
     Box(modifier = modifier.size(48.dp).then(backgroundModifier)) {
         key(iconType) {
-            SnizzorsUIViewController(
+            UIKitViewController(
                 factory = { factory(iconName, onClick, borderWidth, borderColor) },
                 update = { controller ->
                     controller.view.alpha = alpha.toDouble()

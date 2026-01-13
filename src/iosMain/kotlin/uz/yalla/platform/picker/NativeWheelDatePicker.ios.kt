@@ -5,7 +5,7 @@ package uz.yalla.platform.picker
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.infiniteretry.snizzors.SnizzorsUIView
+import androidx.compose.ui.viewinterop.UIKitView
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.ObjCAction
@@ -36,7 +36,7 @@ actual fun NativeWheelDatePicker(
 ) {
     val dateChangeHandler = remember { DateChangeHandler(onDateChanged) }
 
-    SnizzorsUIView(
+    UIKitView(
         factory = {
             UIDatePicker().apply {
                 datePickerMode = UIDatePickerMode.UIDatePickerModeDate

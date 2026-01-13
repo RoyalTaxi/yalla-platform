@@ -6,7 +6,6 @@ navigation-compose = "2.9.1"
 core-ktx = "1.15.0"
 material-icons = "1.7.7"
 kotlin-serialization = "1.9.0"
-snizzors = "1.0.0-cmp1.10-alpha01"
 datetime-wheel-picker = "1.1.0-alpha05-compose1.9"
 kotlinx-datetime = "0.7.1-0.6.x-compat"
 
@@ -17,7 +16,6 @@ navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-co
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "material-icons" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
-snizzors = { module = "com.infiniteretry.snizzors:snizzors", version.ref = "snizzors" }
 datetime-wheel-picker = { module = "io.github.darkokoa:datetime-wheel-picker", version.ref = "datetime-wheel-picker" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
