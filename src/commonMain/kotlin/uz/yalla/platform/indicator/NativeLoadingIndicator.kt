@@ -7,5 +7,6 @@ import androidx.compose.ui.graphics.Color
 @Composable
 expect fun NativeLoadingIndicator(
     modifier: Modifier = Modifier,
-    color: Color = Color.Unspecified
+    color: Color = Color.Unspecified,
+    backgroundColor: Color = Color.Unspecified
 )
