@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.UIKitInteropProperties
 import androidx.compose.ui.viewinterop.UIKitViewController
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.UIKit.UIColor
@@ -20,7 +22,7 @@ import uz.yalla.platform.LocalCircleIconButtonFactory
 import uz.yalla.platform.model.IconType
 import uz.yalla.platform.toAssetName
 
-@OptIn(ExperimentalForeignApi::class)
+@OptIn(ExperimentalForeignApi::class, ExperimentalComposeUiApi::class)
 @Composable
 actual fun NativeCircleIconButton(
     iconType: IconType,
@@ -52,7 +54,8 @@ actual fun NativeCircleIconButton(
                     controller.view.layer.setOpaque(false)
                     controller.view.layer.backgroundColor = UIColor.clearColor.CGColor
                 },
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(48.dp),
+                properties = UIKitInteropProperties(placedAsOverlay = true)
             )
         }
     }
