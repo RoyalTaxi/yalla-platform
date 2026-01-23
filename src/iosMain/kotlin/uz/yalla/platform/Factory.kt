@@ -21,6 +21,7 @@ data class SheetPresenterFactory(
         parent: UIViewController,
         controller: UIViewController,
         cornerRadius: Double,
+        backgroundColor: Long,
         onDismiss: () -> Unit
     ) -> Unit,
     val updateHeight: (controller: UIViewController, height: Double) -> Unit,
@@ -28,7 +29,7 @@ data class SheetPresenterFactory(
 )
 
 class NativeSheetPresenterFactory(
-    private val present: (UIViewController, UIViewController, Double, () -> Unit) -> Unit,
+    private val present: (UIViewController, UIViewController, Double, Long, () -> Unit) -> Unit,
     private val updateHeight: (UIViewController, Double) -> Unit,
     private val dismiss: (UIViewController, Boolean) -> Unit
 ) {

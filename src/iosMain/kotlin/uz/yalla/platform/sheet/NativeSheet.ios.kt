@@ -48,6 +48,7 @@ actual fun NativeSheet(
             circleButtonFactory = circleButtonFactory,
             squircleButtonFactory = squircleButtonFactory,
             themeProvider = themeProvider,
+            backgroundColor = containerColor.value.toLong(),
             content = { currentContent() }
         )
 
