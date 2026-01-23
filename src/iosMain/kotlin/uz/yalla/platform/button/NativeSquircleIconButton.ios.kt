@@ -6,14 +6,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.UIKitInteropProperties
 import androidx.compose.ui.viewinterop.UIKitViewController
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.UIKit.UIColor
@@ -23,7 +21,7 @@ import uz.yalla.platform.toAssetName
 
 private val SquircleShape = RoundedCornerShape(12.dp)
 
-@OptIn(ExperimentalForeignApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalForeignApi::class)
 @Composable
 actual fun NativeSquircleIconButton(
     iconType: IconType,
@@ -52,8 +50,7 @@ actual fun NativeSquircleIconButton(
                 controller.view.layer.setOpaque(false)
                 controller.view.layer.backgroundColor = UIColor.clearColor.CGColor
             },
-            modifier = Modifier.size(48.dp),
-            properties = UIKitInteropProperties(placedAsOverlay = true)
+            modifier = Modifier.size(48.dp)
         )
     }
 }
