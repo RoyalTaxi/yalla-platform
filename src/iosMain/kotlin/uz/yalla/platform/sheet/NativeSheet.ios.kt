@@ -2,7 +2,7 @@ package uz.yalla.platform.sheet
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -54,7 +54,7 @@ actual fun NativeSheet(
             squircleButtonFactory = squircleButtonFactory,
             themeProvider = themeProvider,
             content = {
-                Box(modifier = Modifier.fillMaxSize().background(currentContainerColor)) {
+                Box(modifier = Modifier.fillMaxWidth().background(currentContainerColor)) {
                     currentContent()
                 }
             }
