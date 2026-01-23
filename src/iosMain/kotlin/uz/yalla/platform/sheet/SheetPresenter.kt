@@ -78,7 +78,7 @@ internal class SheetPresenter(
         themeProvider: ThemeProvider?,
         content: @Composable () -> Unit
     ): UIViewController = ComposeUIViewController(
-        configure = { opaque = false }
+        configure = { opaque = true }
     ) {
         val themedContent: @Composable () -> Unit = {
             CompositionLocalProvider(
