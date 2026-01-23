@@ -1,8 +1,5 @@
 package uz.yalla.platform.sheet
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -17,9 +14,7 @@ import platform.UIKit.UISceneActivationStateForegroundActive
 import platform.UIKit.UIViewController
 import platform.UIKit.UIWindow
 import platform.UIKit.UIWindowScene
-import uz.yalla.platform.LocalCircleIconButtonFactory
 import uz.yalla.platform.LocalSheetPresenterFactory
-import uz.yalla.platform.LocalSquircleIconButtonFactory
 import uz.yalla.platform.LocalThemeProvider
 
 @Suppress("UNUSED_PARAMETER")
@@ -34,10 +29,7 @@ actual fun NativeSheet(
     val parentController = remember(isVisible) { findKeyWindowRootController() } ?: return
     val currentOnDismiss by rememberUpdatedState(onDismissRequest)
     val currentContent by rememberUpdatedState(content)
-    val currentContainerColor by rememberUpdatedState(containerColor)
 
-    val circleButtonFactory = LocalCircleIconButtonFactory.current
-    val squircleButtonFactory = LocalSquircleIconButtonFactory.current
     val sheetFactory = LocalSheetPresenterFactory.current
     val themeProvider = LocalThemeProvider.current
 
@@ -51,15 +43,9 @@ actual fun NativeSheet(
         )
 
         presenter.present(
-            circleButtonFactory = circleButtonFactory,
-            squircleButtonFactory = squircleButtonFactory,
             themeProvider = themeProvider,
             backgroundColor = containerColor.toArgb().toLong(),
-            content = {
-                Box(modifier = Modifier.fillMaxWidth().background(currentContainerColor)) {
-                    currentContent()
-                }
-            }
+            content = currentContent
         )
 
         onDispose { presenter.dismiss(animated = true) }

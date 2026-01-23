@@ -4,7 +4,6 @@ package uz.yalla.platform.sheet
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
@@ -12,13 +11,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.window.ComposeUIViewController
 import platform.UIKit.UIModalPresentationPageSheet
 import platform.UIKit.UIViewController
-import uz.yalla.platform.LocalCircleIconButtonFactory
-import uz.yalla.platform.LocalSquircleIconButtonFactory
 import uz.yalla.platform.SheetPresenterFactory
 import kotlin.math.abs
 
-internal typealias CircleButtonFactory = (String, () -> Unit, Double, Long) -> UIViewController
-internal typealias SquircleButtonFactory = (String, () -> Unit, Double, Long) -> UIViewController
 internal typealias ThemeProvider = @Composable (@Composable () -> Unit) -> Unit
 
 internal class SheetPresenter(
@@ -31,8 +26,6 @@ internal class SheetPresenter(
     private var lastMeasuredHeight = 0.0
 
     fun present(
-        circleButtonFactory: CircleButtonFactory?,
-        squircleButtonFactory: SquircleButtonFactory?,
         themeProvider: ThemeProvider?,
         backgroundColor: Long = 0xFFFFFFFF,
         content: @Composable () -> Unit
@@ -41,8 +34,6 @@ internal class SheetPresenter(
         val parentController = parent?.topPresentedController() ?: return
 
         val host = createComposeController(
-            circleButtonFactory = circleButtonFactory,
-            squircleButtonFactory = squircleButtonFactory,
             themeProvider = themeProvider,
             content = content
         )
@@ -73,22 +64,12 @@ internal class SheetPresenter(
     }
 
     private fun createComposeController(
-        circleButtonFactory: CircleButtonFactory?,
-        squircleButtonFactory: SquircleButtonFactory?,
         themeProvider: ThemeProvider?,
         content: @Composable () -> Unit
     ): UIViewController = ComposeUIViewController(
-        configure = { opaque = true }
+        configure = { opaque = false }
     ) {
-        val themedContent: @Composable () -> Unit = {
-            CompositionLocalProvider(
-                LocalCircleIconButtonFactory provides circleButtonFactory,
-                LocalSquircleIconButtonFactory provides squircleButtonFactory
-            ) {
-                MeasuredContent(content)
-            }
-        }
-
+        val themedContent: @Composable () -> Unit = { MeasuredContent(content) }
         themeProvider?.invoke(themedContent) ?: themedContent()
     }.apply {
         modalPresentationStyle = UIModalPresentationPageSheet
