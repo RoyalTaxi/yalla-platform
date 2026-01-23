@@ -11,6 +11,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.toArgb
 import platform.UIKit.UIApplication
 import platform.UIKit.UISceneActivationStateForegroundActive
 import platform.UIKit.UIViewController
@@ -53,6 +54,7 @@ actual fun NativeSheet(
             circleButtonFactory = circleButtonFactory,
             squircleButtonFactory = squircleButtonFactory,
             themeProvider = themeProvider,
+            backgroundColor = containerColor.toArgb().toLong(),
             content = {
                 Box(modifier = Modifier.fillMaxWidth().background(currentContainerColor)) {
                     currentContent()

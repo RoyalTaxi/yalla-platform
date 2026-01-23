@@ -34,6 +34,7 @@ internal class SheetPresenter(
         circleButtonFactory: CircleButtonFactory?,
         squircleButtonFactory: SquircleButtonFactory?,
         themeProvider: ThemeProvider?,
+        backgroundColor: Long = 0xFFFFFFFF,
         content: @Composable () -> Unit
     ) {
         controller?.let { dismiss(animated = false) }
@@ -49,7 +50,7 @@ internal class SheetPresenter(
         controller = host
 
         if (factory != null) {
-            factory.present(parentController, host, CORNER_RADIUS, 0xFFFFFFFF) {
+            factory.present(parentController, host, CORNER_RADIUS, backgroundColor) {
                 handleDismissCallback()
             }
         } else {
