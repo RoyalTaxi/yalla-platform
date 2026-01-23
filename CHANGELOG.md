@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.4] - 2026-01-23
+
+### Fixed
+- **NativeSheet**
+  - Background color now reactive to theme changes using `rememberUpdatedState`
+  - Background now covers full view including safe areas using `fillMaxSize()`
+  - Moved background application from SheetPresenter to NativeSheet for proper reactivity
+
 ## [1.9.3] - 2026-01-23
 
 ### Fixed

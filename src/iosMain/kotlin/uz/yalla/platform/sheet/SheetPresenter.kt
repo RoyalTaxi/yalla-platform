@@ -2,13 +2,11 @@
 
 package uz.yalla.platform.sheet
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.window.ComposeUIViewController
@@ -31,19 +29,15 @@ internal class SheetPresenter(
     private var controller: UIViewController? = null
     private var isProgrammaticDismiss = false
     private var lastMeasuredHeight = 0.0
-    private var bgColor: Color = Color.White
 
     fun present(
         circleButtonFactory: CircleButtonFactory?,
         squircleButtonFactory: SquircleButtonFactory?,
         themeProvider: ThemeProvider?,
-        backgroundColor: Long = 0xFFFFFFFF,
         content: @Composable () -> Unit
     ) {
         controller?.let { dismiss(animated = false) }
         val parentController = parent?.topPresentedController() ?: return
-
-        bgColor = Color(backgroundColor.toInt())
 
         val host = createComposeController(
             circleButtonFactory = circleButtonFactory,
@@ -55,7 +49,7 @@ internal class SheetPresenter(
         controller = host
 
         if (factory != null) {
-            factory.present(parentController, host, CORNER_RADIUS, backgroundColor) {
+            factory.present(parentController, host, CORNER_RADIUS, 0xFFFFFFFF) {
                 handleDismissCallback()
             }
         } else {
@@ -104,15 +98,13 @@ internal class SheetPresenter(
         val density = LocalDensity.current
 
         Box(
-            modifier = Modifier
-                .background(bgColor)
-                .onSizeChanged { size ->
-                    val heightPt = size.height / density.density.toDouble()
-                    if (abs(lastMeasuredHeight - heightPt) > HEIGHT_CHANGE_THRESHOLD) {
-                        lastMeasuredHeight = heightPt
-                        controller?.let { factory?.updateHeight(it, heightPt) }
-                    }
+            modifier = Modifier.onSizeChanged { size ->
+                val heightPt = size.height / density.density.toDouble()
+                if (abs(lastMeasuredHeight - heightPt) > HEIGHT_CHANGE_THRESHOLD) {
+                    lastMeasuredHeight = heightPt
+                    controller?.let { factory?.updateHeight(it, heightPt) }
                 }
+            }
         ) {
             content()
         }

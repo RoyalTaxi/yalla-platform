@@ -1,13 +1,16 @@
 package uz.yalla.platform.sheet
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.toArgb
 import platform.UIKit.UIApplication
 import platform.UIKit.UISceneActivationStateForegroundActive
 import platform.UIKit.UIViewController
@@ -30,6 +33,7 @@ actual fun NativeSheet(
     val parentController = remember(isVisible) { findKeyWindowRootController() } ?: return
     val currentOnDismiss by rememberUpdatedState(onDismissRequest)
     val currentContent by rememberUpdatedState(content)
+    val currentContainerColor by rememberUpdatedState(containerColor)
 
     val circleButtonFactory = LocalCircleIconButtonFactory.current
     val squircleButtonFactory = LocalSquircleIconButtonFactory.current
@@ -49,8 +53,11 @@ actual fun NativeSheet(
             circleButtonFactory = circleButtonFactory,
             squircleButtonFactory = squircleButtonFactory,
             themeProvider = themeProvider,
-            backgroundColor = containerColor.toArgb().toLong(),
-            content = { currentContent() }
+            content = {
+                Box(modifier = Modifier.fillMaxSize().background(currentContainerColor)) {
+                    currentContent()
+                }
+            }
         )
 
         onDispose { presenter.dismiss(animated = true) }
