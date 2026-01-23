@@ -63,6 +63,10 @@ internal class SheetPresenter(
         isProgrammaticDismiss = false
     }
 
+    fun updateBackground(backgroundColor: Long) {
+        controller?.let { factory?.updateBackground(it, backgroundColor) }
+    }
+
     private fun createComposeController(
         themeProvider: ThemeProvider?,
         content: @Composable () -> Unit

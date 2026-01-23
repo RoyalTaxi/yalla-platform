@@ -2,10 +2,10 @@ package uz.yalla.platform.sheet
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.toArgb
@@ -27,28 +27,37 @@ actual fun NativeSheet(
     content: @Composable () -> Unit
 ) {
     val parentController = remember(isVisible) { findKeyWindowRootController() } ?: return
-    val currentOnDismiss by rememberUpdatedState(onDismissRequest)
-    val currentContent by rememberUpdatedState(content)
+    val currentOnDismiss = rememberUpdatedState(onDismissRequest)
+    val currentContent = rememberUpdatedState(content)
 
     val sheetFactory = LocalSheetPresenterFactory.current
     val themeProvider = LocalThemeProvider.current
+    val backgroundColor = containerColor.toArgb().toLong()
 
-    DisposableEffect(isVisible, parentController) {
-        if (!isVisible) return@DisposableEffect onDispose {}
-
-        val presenter = SheetPresenter(
+    val presenter = remember(parentController, sheetFactory) {
+        SheetPresenter(
             parent = parentController,
             factory = sheetFactory,
-            onDismissedByUser = { currentOnDismiss() }
+            onDismissedByUser = { currentOnDismiss.value() }
         )
+    }
+
+    DisposableEffect(isVisible, presenter) {
+        if (!isVisible) return@DisposableEffect onDispose {}
 
         presenter.present(
             themeProvider = themeProvider,
-            backgroundColor = containerColor.toArgb().toLong(),
-            content = currentContent
+            backgroundColor = backgroundColor,
+            content = { currentContent.value() }
         )
 
         onDispose { presenter.dismiss(animated = true) }
+    }
+
+    LaunchedEffect(isVisible, presenter, backgroundColor) {
+        if (isVisible) {
+            presenter.updateBackground(backgroundColor)
+        }
     }
 }
 
