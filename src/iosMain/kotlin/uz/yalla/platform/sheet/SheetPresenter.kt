@@ -24,6 +24,7 @@ internal class SheetPresenter(
     private var controller: UIViewController? = null
     private var isProgrammaticDismiss = false
     private var lastMeasuredHeight = 0.0
+    private var hasMeasuredHeight = false
 
     fun present(
         themeProvider: ThemeProvider?,
@@ -31,6 +32,7 @@ internal class SheetPresenter(
         content: @Composable () -> Unit
     ) {
         controller?.let { dismiss(animated = false) }
+        resetMeasurements()
         val parentController = parent?.topPresentedController() ?: return
 
         val host = createComposeController(
@@ -86,14 +88,26 @@ internal class SheetPresenter(
         Box(
             modifier = Modifier.onSizeChanged { size ->
                 val heightPt = size.height / density.density.toDouble()
-                if (abs(lastMeasuredHeight - heightPt) > HEIGHT_CHANGE_THRESHOLD) {
+                if (heightPt <= 0.0) return@onSizeChanged
+
+                val shouldUpdate =
+                    !hasMeasuredHeight ||
+                        abs(lastMeasuredHeight - heightPt) > HEIGHT_CHANGE_THRESHOLD
+
+                if (shouldUpdate) {
                     lastMeasuredHeight = heightPt
+                    hasMeasuredHeight = true
                     controller?.let { factory?.updateHeight(it, heightPt) }
                 }
             }
         ) {
             content()
         }
+    }
+
+    private fun resetMeasurements() {
+        lastMeasuredHeight = 0.0
+        hasMeasuredHeight = false
     }
 
     private fun handleDismissCallback() {
