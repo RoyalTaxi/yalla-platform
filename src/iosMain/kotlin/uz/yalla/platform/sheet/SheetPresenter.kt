@@ -3,7 +3,6 @@
 package uz.yalla.platform.sheet
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -87,24 +86,23 @@ internal class SheetPresenter(
         val density = LocalDensity.current
 
         Box(
-            modifier = Modifier
-                .systemBarsPadding()
-                .onSizeChanged { size ->
-                    val heightPt = size.height / density.density.toDouble()
-                    if (heightPt <= 0.0) return@onSizeChanged
+            modifier = Modifier.onSizeChanged { size ->
+                val heightPt = size.height / density.density.toDouble()
+                if (heightPt <= 0.0) return@onSizeChanged
 
-                    val shouldUpdate =
-                        !hasMeasuredHeight ||
-                            abs(lastMeasuredHeight - heightPt) > HEIGHT_CHANGE_THRESHOLD
+                val shouldUpdate =
+                    !hasMeasuredHeight ||
+                        abs(lastMeasuredHeight - heightPt) > HEIGHT_CHANGE_THRESHOLD
 
-                    if (shouldUpdate) {
-                        lastMeasuredHeight = heightPt
-                        hasMeasuredHeight = true
-                        controller?.let { factory?.updateHeight(it, heightPt) }
-                    }
-                },
-            content = { content() }
-        )
+                if (shouldUpdate) {
+                    lastMeasuredHeight = heightPt
+                    hasMeasuredHeight = true
+                    controller?.let { factory?.updateHeight(it, heightPt) }
+                }
+            }
+        ) {
+            content()
+        }
     }
 
     private fun resetMeasurements() {

@@ -5,13 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.10.8] - 2026-01-25
+## [1.10.9] - 2026-01-25
 
-### Fixed
+### Reverted
 - **NativeSheet**
-  - Fixed `fillMaxSize()` content not respecting system bar insets on both platforms
-  - Android: Wrapped content with `systemBarsPadding()` and disabled default `contentWindowInsets`
-  - iOS: Added `systemBarsPadding()` to `MeasuredContent` for proper safe area handling
+  - Reverted changes from 1.10.7/1.10.8 that broke sheet behavior
 
 ## [1.10.6] - 2026-01-24
 
