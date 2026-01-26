@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.10] - 2026-01-26
+
+### Fixed
+- **NativeSheet (Android)**
+  - Added theme-aware `ModalBottomSheetProperties` to control system bar appearance
+  - Status bar and navigation bar icons now match app theme when sheet is open
+  - Uses `isSystemInDarkTheme()` to detect current theme
+
 ## [1.10.9] - 2026-01-25
 
 ### Reverted

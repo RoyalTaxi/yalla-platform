@@ -1,7 +1,9 @@
 package uz.yalla.platform.sheet
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,6 +23,12 @@ actual fun NativeSheet(
     onDismissRequest: () -> Unit,
     content: @Composable () -> Unit
 ) {
+    val isDark = isSystemInDarkTheme()
+    val properties = ModalBottomSheetProperties(
+        isAppearanceLightStatusBars = !isDark,
+        isAppearanceLightNavigationBars = !isDark,
+    )
+
     var shouldShow by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(true)
 
@@ -39,6 +47,7 @@ actual fun NativeSheet(
             shape = shape,
             containerColor = containerColor,
             dragHandle = null,
+            properties = properties,
             onDismissRequest = {
                 shouldShow = false
                 onDismissRequest()
