@@ -21,12 +21,13 @@ actual fun NativeSheet(
     shape: Shape,
     containerColor: Color,
     onDismissRequest: () -> Unit,
+    isDark: Boolean?,
     content: @Composable () -> Unit
 ) {
-    val isDark = isSystemInDarkTheme()
+    val darkMode = isDark ?: isSystemInDarkTheme()
     val properties = ModalBottomSheetProperties(
-        isAppearanceLightStatusBars = !isDark,
-        isAppearanceLightNavigationBars = !isDark,
+        isAppearanceLightStatusBars = !darkMode,
+        isAppearanceLightNavigationBars = !darkMode,
     )
 
     var shouldShow by remember { mutableStateOf(false) }

@@ -10,5 +10,6 @@ expect fun NativeSheet(
     shape: Shape,
     containerColor: Color,
     onDismissRequest: () -> Unit,
+    isDark: Boolean? = null,
     content: @Composable () -> Unit
 )

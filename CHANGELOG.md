@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.11] - 2026-01-26
+
+### Changed
+- **NativeSheet**
+  - Added `isDark: Boolean?` parameter to allow callers to pass the app's theme preference
+  - Falls back to `isSystemInDarkTheme()` when `isDark` is null
+  - Fixes system bar appearance when user has explicitly set app theme (LIGHT/DARK) regardless of system setting
+
 ## [1.10.10] - 2026-01-26
 
 ### Fixed

@@ -24,6 +24,7 @@ actual fun NativeSheet(
     shape: Shape,
     containerColor: Color,
     onDismissRequest: () -> Unit,
+    isDark: Boolean?,
     content: @Composable () -> Unit
 ) {
     val parentController = remember(isVisible) { findKeyWindowRootController() } ?: return
