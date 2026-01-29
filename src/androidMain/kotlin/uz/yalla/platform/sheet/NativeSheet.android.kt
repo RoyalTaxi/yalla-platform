@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,6 +22,8 @@ actual fun NativeSheet(
     shape: Shape,
     containerColor: Color,
     onDismissRequest: () -> Unit,
+    dismissEnabled: Boolean,
+    onDismissAttempt: () -> Unit,
     isDark: Boolean?,
     content: @Composable () -> Unit
 ) {
@@ -31,7 +34,18 @@ actual fun NativeSheet(
     )
 
     var shouldShow by remember { mutableStateOf(false) }
-    val sheetState = rememberModalBottomSheetState(true)
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+        confirmValueChange = { value ->
+            val isHiding = value == SheetValue.Hidden
+            if (!dismissEnabled && isVisible && isHiding) {
+                onDismissAttempt()
+                false
+            } else {
+                true
+            }
+        }
+    )
 
     LaunchedEffect(isVisible) {
         if (isVisible) {
@@ -50,11 +64,14 @@ actual fun NativeSheet(
             dragHandle = null,
             properties = properties,
             onDismissRequest = {
-                shouldShow = false
-                onDismissRequest()
-            }
-        ) {
-            content()
-        }
+                if (dismissEnabled) {
+                    shouldShow = false
+                    onDismissRequest()
+                } else {
+                    onDismissAttempt()
+                }
+            },
+            content = { content() }
+        )
     }
 }

@@ -24,6 +24,8 @@ actual fun NativeSheet(
     shape: Shape,
     containerColor: Color,
     onDismissRequest: () -> Unit,
+    dismissEnabled: Boolean,
+    onDismissAttempt: () -> Unit,
     isDark: Boolean?,
     content: @Composable () -> Unit
 ) {
@@ -46,6 +48,10 @@ actual fun NativeSheet(
     DisposableEffect(isVisible, presenter) {
         if (!isVisible) return@DisposableEffect onDispose {}
 
+        presenter.updateDismissBehavior(
+            dismissEnabled = dismissEnabled,
+            onDismissAttempt = onDismissAttempt
+        )
         presenter.present(
             themeProvider = themeProvider,
             backgroundColor = backgroundColor,
@@ -55,8 +61,12 @@ actual fun NativeSheet(
         onDispose { presenter.dismiss(animated = true) }
     }
 
-    LaunchedEffect(isVisible, presenter, backgroundColor) {
+    LaunchedEffect(isVisible, presenter, backgroundColor, dismissEnabled, onDismissAttempt) {
         if (isVisible) {
+            presenter.updateDismissBehavior(
+                dismissEnabled = dismissEnabled,
+                onDismissAttempt = onDismissAttempt
+            )
             presenter.updateBackground(backgroundColor)
         }
     }

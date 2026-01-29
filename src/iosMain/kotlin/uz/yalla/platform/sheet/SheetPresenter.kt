@@ -9,7 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.window.ComposeUIViewController
+import platform.Foundation.NSObject
+import platform.UIKit.UIAdaptivePresentationControllerDelegateProtocol
 import platform.UIKit.UIModalPresentationPageSheet
+import platform.UIKit.UIPresentationController
 import platform.UIKit.UIViewController
 import uz.yalla.platform.SheetPresenterFactory
 import kotlin.math.abs
@@ -25,6 +28,9 @@ internal class SheetPresenter(
     private var isProgrammaticDismiss = false
     private var lastMeasuredHeight = 0.0
     private var hasMeasuredHeight = false
+    private var dismissEnabled = true
+    private var onDismissAttempt: () -> Unit = {}
+    private var dismissDelegate: SheetDismissDelegate? = null
 
     fun present(
         themeProvider: ThemeProvider?,
@@ -49,6 +55,7 @@ internal class SheetPresenter(
         } else {
             parentController.presentViewController(host, animated = true, completion = null)
         }
+        updateDismissBehavior(dismissEnabled, onDismissAttempt)
     }
 
     fun dismiss(animated: Boolean = true) {
@@ -67,6 +74,22 @@ internal class SheetPresenter(
 
     fun updateBackground(backgroundColor: Long) {
         controller?.let { factory?.updateBackground(it, backgroundColor) }
+    }
+
+    fun updateDismissBehavior(dismissEnabled: Boolean, onDismissAttempt: () -> Unit) {
+        this.dismissEnabled = dismissEnabled
+        this.onDismissAttempt = onDismissAttempt
+        val current = controller ?: return
+        current.isModalInPresentation = !dismissEnabled
+        val presentation = current.presentationController
+        if (!dismissEnabled) {
+            val delegate = SheetDismissDelegate(onDismissAttempt)
+            dismissDelegate = delegate
+            presentation?.delegate = delegate
+        } else {
+            presentation?.delegate = null
+            dismissDelegate = null
+        }
     }
 
     private fun createComposeController(
@@ -120,6 +143,16 @@ internal class SheetPresenter(
     private companion object {
         const val CORNER_RADIUS = 24.0
         const val HEIGHT_CHANGE_THRESHOLD = 20.0
+    }
+}
+
+private class SheetDismissDelegate(
+    private val onDismissAttempt: () -> Unit
+) : NSObject(), UIAdaptivePresentationControllerDelegateProtocol {
+    override fun presentationControllerDidAttemptToDismiss(
+        presentationController: UIPresentationController
+    ) {
+        onDismissAttempt()
     }
 }
 

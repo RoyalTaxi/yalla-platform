@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.14] - 2026-01-29
+
+### Added
+- **NativeSheet**
+  - Added `dismissEnabled` and `onDismissAttempt` to support non-dismissible sheets
+  - Blocks interactive dismiss on iOS and triggers a callback when the user tries to dismiss
+  - Prevents Android sheets from hiding while dismissal is disabled
+
+## [1.10.13] - 2026-01-26
+
+### Reverted
+- **NativeSheet**
+    - Reverted changes from 1.10.12 that didn't change padding behavior
+
+## [1.10.12] - 2026-01-26
+
+### Changed
+- **NativeSheet**
+    - Wrapped content in a box which respects `systemBarsPadding`
+
+
 ## [1.10.11] - 2026-01-26
 
 ### Changed

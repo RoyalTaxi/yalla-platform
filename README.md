@@ -137,7 +137,9 @@ NativeSheet(
     isVisible = showSheet,
     shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
     containerColor = System.color.backgroundBase,
-    onDismissRequest = { showSheet = false }
+    onDismissRequest = { showSheet = false },
+    dismissEnabled = true,
+    onDismissAttempt = { /* optional */ }
 ) {
     // Sheet content
 }
