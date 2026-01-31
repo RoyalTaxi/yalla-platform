@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -34,17 +35,22 @@ actual fun NativeSheet(
     )
 
     var shouldShow by remember { mutableStateOf(false) }
+    val currentDismissEnabled by rememberUpdatedState(dismissEnabled)
+    val currentIsVisible by rememberUpdatedState(isVisible)
+    val currentOnDismissAttempt by rememberUpdatedState(onDismissAttempt)
+    val currentOnDismissRequest by rememberUpdatedState(onDismissRequest)
+
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
         confirmValueChange = { value ->
             val isHiding = value == SheetValue.Hidden
-            if (!dismissEnabled && isVisible && isHiding) {
-                onDismissAttempt()
+            if (!currentDismissEnabled && currentIsVisible && isHiding) {
+                currentOnDismissAttempt()
                 false
             } else {
                 true
             }
-        }
+        },
     )
 
     LaunchedEffect(isVisible) {
@@ -64,11 +70,11 @@ actual fun NativeSheet(
             dragHandle = null,
             properties = properties,
             onDismissRequest = {
-                if (dismissEnabled) {
+                if (currentDismissEnabled) {
                     shouldShow = false
-                    onDismissRequest()
+                    currentOnDismissRequest()
                 } else {
-                    onDismissAttempt()
+                    currentOnDismissAttempt()
                 }
             },
             content = { content() }
