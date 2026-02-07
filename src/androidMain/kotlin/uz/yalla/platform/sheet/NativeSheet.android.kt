@@ -3,6 +3,8 @@ package uz.yalla.platform.sheet
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.union
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
@@ -83,7 +85,7 @@ actual fun NativeSheet(
             containerColor = containerColor,
             dragHandle = null,
             properties = properties,
-            contentWindowInsets = { WindowInsets.ime },
+            contentWindowInsets = { WindowInsets.ime.union(WindowInsets.navigationBars) },
             onDismissRequest = {
                 if (currentDismissEnabled) {
                     shouldShow = false

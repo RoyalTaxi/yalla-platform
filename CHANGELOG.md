@@ -5,12 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.1.1] - 2026-02-07
+## [2.1.2] - 2026-02-07
+
+### Fixed
+- **NativeSheet (Android)**
+  - Fixed missing navigation bar padding by using `WindowInsets.ime.union(WindowInsets.navigationBars)`
+  - Previous 2.1.1 broke navigation bar padding by only using IME insets
+
+## [2.1.1] - 2026-02-07 [YANKED]
 
 ### Fixed
 - **NativeSheet (Android)**
   - Added `contentWindowInsets = { WindowInsets.ime }` for proper keyboard handling
   - Sheet content now adjusts when keyboard appears, matching AnimatedSheet behavior
+  - ⚠️ This version broke navigation bar padding - use 2.1.2 instead
 
 ## [2.1.0] - 2026-02-07
 
