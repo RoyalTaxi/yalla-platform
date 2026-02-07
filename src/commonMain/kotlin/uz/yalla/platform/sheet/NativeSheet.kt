@@ -13,5 +13,6 @@ expect fun NativeSheet(
     dismissEnabled: Boolean = true,
     onDismissAttempt: () -> Unit = {},
     isDark: Boolean? = null,
+    onFullyExpanded: (() -> Unit)? = null,
     content: @Composable () -> Unit
 )

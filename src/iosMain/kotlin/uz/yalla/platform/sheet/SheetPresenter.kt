@@ -31,6 +31,7 @@ internal class SheetPresenter(
     fun present(
         themeProvider: ThemeProvider?,
         backgroundColor: Long = 0xFFFFFFFF,
+        onPresented: () -> Unit = {},
         content: @Composable () -> Unit,
     ) {
         controller?.let { dismiss(animated = false) }
@@ -46,11 +47,16 @@ internal class SheetPresenter(
         controller = host
 
         if (factory != null) {
-            factory.present(parentController, host, CORNER_RADIUS, backgroundColor) {
-                handleDismissCallback()
-            }
+            factory.present(
+                parentController,
+                host,
+                CORNER_RADIUS,
+                backgroundColor,
+                { handleDismissCallback() },
+                onPresented
+            )
         } else {
-            parentController.presentViewController(host, animated = true, completion = null)
+            parentController.presentViewController(host, animated = true) { onPresented() }
         }
         updateDismissBehavior(dismissEnabled, onDismissAttempt)
     }

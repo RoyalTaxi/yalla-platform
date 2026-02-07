@@ -27,6 +27,7 @@ actual fun NativeSheet(
     dismissEnabled: Boolean,
     onDismissAttempt: () -> Unit,
     isDark: Boolean?,
+    onFullyExpanded: (() -> Unit)?,
     content: @Composable () -> Unit
 ) {
     val parentController = remember(isVisible) { findKeyWindowRootController() } ?: return
@@ -45,6 +46,8 @@ actual fun NativeSheet(
         )
     }
 
+    val currentOnFullyExpanded = rememberUpdatedState(onFullyExpanded)
+
     DisposableEffect(isVisible, presenter) {
         if (!isVisible) return@DisposableEffect onDispose {}
 
@@ -55,6 +58,7 @@ actual fun NativeSheet(
         presenter.present(
             themeProvider = themeProvider,
             backgroundColor = backgroundColor,
+            onPresented = { currentOnFullyExpanded.value?.invoke() },
             content = { currentContent.value() }
         )
 

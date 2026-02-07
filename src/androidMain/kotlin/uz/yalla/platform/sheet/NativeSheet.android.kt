@@ -13,8 +13,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -26,6 +29,7 @@ actual fun NativeSheet(
     dismissEnabled: Boolean,
     onDismissAttempt: () -> Unit,
     isDark: Boolean?,
+    onFullyExpanded: (() -> Unit)?,
     content: @Composable () -> Unit
 ) {
     val darkMode = isDark ?: isSystemInDarkTheme()
@@ -60,6 +64,14 @@ actual fun NativeSheet(
             sheetState.hide()
             shouldShow = false
         }
+    }
+
+    LaunchedEffect(sheetState, onFullyExpanded) {
+        if (onFullyExpanded == null) return@LaunchedEffect
+        snapshotFlow { sheetState.currentValue to sheetState.targetValue }
+            .distinctUntilChanged()
+            .filter { (current, target) -> current == SheetValue.Expanded && current == target }
+            .collect { onFullyExpanded() }
     }
 
     if (shouldShow) {
